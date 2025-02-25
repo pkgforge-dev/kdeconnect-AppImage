@@ -80,7 +80,7 @@ xvfb-run -a -- ./lib4bin -p -v -e -s -k \
 cp -rv /usr/lib/qt6/qml ./shared/lib/qt6
 
 ./sharun -g # makes sharun generate the lib.path file
-VERSION=$(./AppRun --version | awk 'FNR==1 {print $2; exit}')
+VERSION=$(pacman -Q kdeconnect | awk 'FNR==1 {print $2; exit}')
 [ -n "$VERSION" ]
 echo "$VERSION" > ~/version
 
