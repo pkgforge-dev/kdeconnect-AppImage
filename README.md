@@ -1,5 +1,9 @@
 # kdeconnect-AppImage
 
+By default running the AppImage will launch `kdeconnect-app`.
+
+In order to launch `kdeconnect-cli`, `kdeconnect-indicator`, `kdeconnectd`. you can symlink the AppImage to those names, and by launching the symlinks the AppImage will know that you want to run that binary instead. You can also pass the binaries as the first argument to the AppImage as well. 
+
 AppImage made using [sharun](https://github.com/VHSgunzo/sharun), which makes it extremely easy to turn any binary into a portable package without using containers or similar tricks. 
 
 **This AppImage bundles everything and should work on any linux distro, even on musl based ones.**
