@@ -7,6 +7,7 @@ export APPIMAGE_EXTRACT_AND_RUN=1
 UPINFO="gh-releases-zsync|$(echo $GITHUB_REPOSITORY | tr '/' '|')|latest|*$ARCH.AppImage.zsync"
 LIB4BN="https://raw.githubusercontent.com/VHSgunzo/sharun/refs/heads/main/lib4bin"
 URUNTIME="https://github.com/VHSgunzo/uruntime/releases/latest/download/uruntime-appimage-dwarfs-$ARCH"
+URUNTIME_LITE="https://github.com/VHSgunzo/uruntime/releases/latest/download/uruntime-appimage-dwarfs-lite-$ARCH"
 
 # Prepare AppDir
 mkdir -p ./AppDir/share/applications
@@ -77,28 +78,26 @@ xvfb-run -a -- ./lib4bin -p -v -e -s -k \
 # kdeconnect needs this as well
 cp -rv /usr/lib/qt6/qml ./shared/lib/qt6
 
-./sharun -g # makes sharun generate the lib.path file
+./sharun -g
 VERSION=$(pacman -Q kdeconnect | awk 'FNR==1 {print $2; exit}')
 [ -n "$VERSION" ]
 echo "$VERSION" > ~/version
 
-# Make AppImage with uruntime
+# make appimage with uruntime
 cd ..
-wget -q "$URUNTIME" -O ./uruntime
-chmod +x ./uruntime
+wget --retry-connrefused --tries=30 "$URUNTIME" -O ./uruntime
+wget --retry-connrefused --tries=30 "$URUNTIME_LITE" -O ./uruntime-lite
+chmod +x ./uruntime*
 
 # Add udpate info to runtime
 echo "Adding update information \"$UPINFO\" to runtime..."
-printf "$UPINFO" > data.upd_info
-llvm-objcopy --update-section=.upd_info=data.upd_info \
-	--set-section-flags=.upd_info=noload,readonly ./uruntime
-printf 'AI\x02' | dd of=./uruntime bs=1 count=3 seek=8 conv=notrunc
+./uruntime-lite --appimage-addupdinfo "$UPINFO"
 
 echo "Generating AppImage..."
 ./uruntime --appimage-mkdwarfs -f \
 	--set-owner 0 --set-group 0 \
 	--no-history --no-create-timestamp \
-	--compression zstd:level=22 -S26 -B32 \
+	--compression zstd:level=22 -S26 -B8 \
 	--header uruntime \
 	-i ./AppDir -o kdeconnect-"$VERSION"-anylinux-"$ARCH".AppImage
 
