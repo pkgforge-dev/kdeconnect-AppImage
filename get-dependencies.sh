@@ -45,6 +45,7 @@ wget --retry-connrefused --tries=30 "$QT6_URL"    -O  ./qt6-base.pkg.tar.zst
 wget --retry-connrefused --tries=30 "$LIBXML_URL" -O  ./libxml2.pkg.tar.zst
 wget --retry-connrefused --tries=30 "$FFMPEG_URL" -O  ./ffmpeg.pkg.tar.zst
 wget --retry-connrefused --tries=30 "$OPUS_URL"   -O  ./opus.pkg.tar.zst
+wget --retry-connrefused --tries=30 "$MESA_URL"   -O  ./mesa.pkg.tar.zst
 
 pacman -U --noconfirm ./*.pkg.tar.zst
 rm -f ./*.pkg.tar.zst
