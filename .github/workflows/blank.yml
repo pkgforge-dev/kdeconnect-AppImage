@@ -5,7 +5,7 @@ concurrency:
 
 on:
   schedule:
-    - cron: "0 14 * * 0"
+    - cron: "0 16 1/21 * *"
   workflow_dispatch:
 
 jobs:
@@ -17,37 +17,7 @@ jobs:
 
     - name: build
       if: always()
-      run: |
-        sed -i 's/DownloadUser/#DownloadUser/g' /etc/pacman.conf
-        pacman -Syu --noconfirm base-devel strace patchelf curl wget \
-          desktop-file-utils git artix-archlinux-support llvm xorg-server-xvfb
-        pacman-key --init && pacman-key --populate archlinux
-        printf "\n[extra]\nInclude = /etc/pacman.d/mirrorlist-arch\n" | tee -a /etc/pacman.conf
-        pacman -Syu --noconfirm zsync pulseaudio pulseaudio-alsa \
-          pipewire-audio kdeconnect qt6ct qt6-wayland libxtst
-
-    - name: Install debloated llvm-libs
-      run: |
-        LLVM_URL="https://github.com/pkgforge-dev/llvm-libs-debloated/releases/download/continuous/llvm-libs-nano-x86_64.pkg.tar.zst"
-        wget --retry-connrefused --tries=30 "$LLVM_URL" -O ./llvm-libs.pkg.tar.zst
-        pacman -U --noconfirm ./llvm-libs.pkg.tar.zst
-        rm -f ./llvm-libs.pkg.tar.zst
-
-    - name: Install iculess libxml2 and qt6-core
-      run: |
-        QT6_URL="https://github.com/pkgforge-dev/llvm-libs-debloated/releases/download/continuous/qt6-base-iculess-x86_64.pkg.tar.zst"
-        LIBXML_URL="https://github.com/pkgforge-dev/llvm-libs-debloated/releases/download/continuous/libxml2-iculess-x86_64.pkg.tar.zst"
-        wget --retry-connrefused --tries=30 "$QT6_URL" -O ./qt6-base-iculess.pkg.tar.zst
-        wget --retry-connrefused --tries=30 "$LIBXML_URL" -O ./libxml2-iculess.pkg.tar.zst
-        pacman -U --noconfirm ./qt6-base-iculess.pkg.tar.zst ./libxml2-iculess.pkg.tar.zst
-        rm -f ./qt6-base-iculess.pkg.tar.zst ./libxml2-iculess.pkg.tar.zst
-
-    - name: Install ffmpeg mini
-      run: |
-        FFMPEG_URL="https://github.com/pkgforge-dev/llvm-libs-debloated/releases/download/continuous/ffmpeg-mini-x86_64.pkg.tar.zst"
-        wget --retry-connrefused --tries=30 "$FFMPEG_URL" -O ./ffmpeg-mini-x86_64.pkg.tar.zst
-        pacman -U --noconfirm ./ffmpeg-mini-x86_64.pkg.tar.zst
-        rm -f ./ffmpeg-mini-x86_64.pkg.tar.zst
+      run: chmod +x ./get-dependencies.sh && ./get-dependencies.sh
 
     - name: Make AppImage
       run: |
