@@ -89,6 +89,9 @@ wget --retry-connrefused --tries=30 "$URUNTIME" -O ./uruntime
 wget --retry-connrefused --tries=30 "$URUNTIME_LITE" -O ./uruntime-lite
 chmod +x ./uruntime*
 
+# Keep the mount point (speeds up launch time) 
+sed -i 's|URUNTIME_MOUNT=[0-9]|URUNTIME_MOUNT=0|' ./uruntime-lite
+
 # Add udpate info to runtime
 echo "Adding update information \"$UPINFO\" to runtime..."
 ./uruntime-lite --appimage-addupdinfo "$UPINFO"
@@ -97,7 +100,7 @@ echo "Generating AppImage..."
 ./uruntime --appimage-mkdwarfs -f \
 	--set-owner 0 --set-group 0 \
 	--no-history --no-create-timestamp \
-	--compression zstd:level=22 -S26 -B8 \
+	--compression lzma -S24 -B8 \
 	--header uruntime \
 	-i ./AppDir -o kdeconnect-"$VERSION"-anylinux-"$ARCH".AppImage
 
