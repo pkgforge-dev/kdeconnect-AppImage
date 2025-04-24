@@ -34,9 +34,20 @@ pacman -Syu --noconfirm \
 	qt6ct \
 	qt6-wayland \
 	strace \
+	vulkan-headers \
+	vulkan-mesa-layers \
+	vulkan-nouveau \
+	vulkan-radeon \
 	wget \
 	xorg-server-xvfb \
-	zsync \
+	zsync
+
+if [ "$(uname -m)" = 'x86_64' ]; then
+	pacman -Syu --noconfirm vulkan-intel
+else
+	pacman -Syu --noconfirm \
+		vulkan-freedreno vulkan-panfrost vulkan-broadcom
+fi
 
 echo "Installing debloated pckages..."
 echo "---------------------------------------------------------------"
