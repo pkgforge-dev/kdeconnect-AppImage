@@ -101,7 +101,7 @@ echo "Generating AppImage..."
 	--set-owner 0 --set-group 0 \
 	--no-history --no-create-timestamp \
 	--compression lzma -S24 -B8 \
-	--header uruntime \
+	--header uruntime-lite \
 	-i ./AppDir -o kdeconnect-"$VERSION"-anylinux-"$ARCH".AppImage
 
 echo "Generating zsync file..."
