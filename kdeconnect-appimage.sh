@@ -62,6 +62,7 @@ xvfb-run -a -- ./lib4bin -p -v -e -s -k \
 	/usr/lib/libKF6Contacts.so* \
 	/usr/lib/libKF6StatusNotifierItem.so* \
 	/usr/lib/libkquickcontrolsprivate.so* \
+	/usr/lib/qt6/plugins/plasma/kcms/*/* \
 	/usr/lib/qt6/plugins/kdeconnect/* \
 	/usr/lib/qt6/plugins/kdeconnect/*/* \
 	/usr/lib/qt6/plugins/kpeople/*/* \
