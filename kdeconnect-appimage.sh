@@ -64,6 +64,7 @@ xvfb-run -a -- ./lib4bin -p -v -e -s -k \
 	/usr/lib/libQt6LabsFolderListModel.so* \
 	/usr/lib/libKF6StatusNotifierItem.so* \
 	/usr/lib/libkquickcontrolsprivate.so* \
+	/usr/lib/libQt6QuickControls2BasicStyleImpl.so* \
 	/usr/lib/qt6/plugins/plasma/kcms/*/* \
 	/usr/lib/qt6/plugins/kdeconnect/* \
 	/usr/lib/qt6/plugins/kdeconnect/*/* \
