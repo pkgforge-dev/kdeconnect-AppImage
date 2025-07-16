@@ -1,4 +1,11 @@
-# kdeconnect-AppImage
+# kdeconnect-AppImage 🐧
+
+[![GitHub Downloads](https://img.shields.io/github/downloads/pkgforge-dev/kdeconnect-AppImage/total?logo=github&label=GitHub%20Downloads)](https://github.com/pkgforge-dev/kdeconnect-AppImage/releases/latest)
+[![CI Build Status](https://github.com//pkgforge-dev/kdeconnect-AppImage/actions/workflows/blank.yml/badge.svg)](https://github.com/pkgforge-dev/kdeconnect-AppImage/releases/latest)
+
+* [Latest Stable Release](https://github.com/pkgforge-dev/kdeconnect-AppImage/releases/latest)
+
+---
 
 By default running the AppImage will launch `kdeconnect-app`.
 
