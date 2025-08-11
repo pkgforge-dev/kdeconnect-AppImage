@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-24.04
     container: ghcr.io/pkgforge-dev/archlinux:latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: build
       run: chmod +x ./get-dependencies.sh && ./get-dependencies.sh
@@ -68,7 +68,7 @@ jobs:
             files: |
               *.AppImage*
 
-        - uses: actions/checkout@v4
+        - uses: actions/checkout@v5
         - name: Update LATEST_VERSION
           run: |
             echo "${{ env.VERSION }}" > ./LATEST_VERSION
