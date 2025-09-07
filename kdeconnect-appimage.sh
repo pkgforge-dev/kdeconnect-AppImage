@@ -1,27 +1,25 @@
 #!/bin/sh
 
 set -eux
-export ARCH="$(uname -m)"
-export APPIMAGE_EXTRACT_AND_RUN=1
 
-UPINFO="gh-releases-zsync|$(echo $GITHUB_REPOSITORY | tr '/' '|')|latest|*$ARCH.AppImage.zsync"
+ARCH="$(uname -m)"
+VERSION="$(cat ~/version)"
 LIB4BN="https://raw.githubusercontent.com/VHSgunzo/sharun/refs/heads/main/lib4bin"
-URUNTIME="https://github.com/VHSgunzo/uruntime/releases/latest/download/uruntime-appimage-dwarfs-$ARCH"
-URUNTIME_LITE="https://github.com/VHSgunzo/uruntime/releases/latest/download/uruntime-appimage-dwarfs-lite-$ARCH"
+URUNTIME="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/uruntime2appimage.sh"
+
+export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
+export OUTNAME=kdeconnect-"$VERSION"-anylinux-"$ARCH".AppImage
+export DESKTOP=/usr/share/applications/org.kde.kdeconnect.app.desktop
+export ICON=/usr/share/icons/hicolor/scalable/apps/kdeconnect.svg
 
 # Prepare AppDir
 mkdir -p ./AppDir/share/applications
 cd ./AppDir
 
-cp -v /usr/share/applications/org.kde.kdeconnect.app.desktop ./
-cp -v /usr/share/applications/org.kde.kdeconnect.* ./share/applications
-cp -v /usr/share/icons/hicolor/scalable/apps/kdeconnect.svg ./
-cp -v /usr/share/icons/hicolor/scalable/apps/kdeconnect.svg ./.DirIcon
-
 cat >> ./AppRun << 'EOF'
 #!/bin/sh
-CURRENTDIR="$(dirname "$(readlink -f "$0")")"
-APPIMAGE="${APPIMAGE:-$(readlink -f "$0")}"
+CURRENTDIR="$(cd "${0%/*}" && echo "$PWD")"
+APPIMAGE="${APPIMAGE:-$0}"
 DATADIR="${XDG_DATA_HOME:-$HOME/.local/share}"
 KDE_DBUS="$DATADIR"/dbus-1/services/org.kde.kdeconnect.service
 BIN="${ARGV0#./}"
@@ -81,33 +79,10 @@ xvfb-run -a -- ./lib4bin -p -v -e -s -k \
 
 # kdeconnect needs this as well
 cp -rv /usr/lib/qt6/qml ./shared/lib/qt6
-
 ./sharun -g
-VERSION=$(pacman -Q kdeconnect | awk 'FNR==1 {print $2; exit}')
-[ -n "$VERSION" ]
-echo "$VERSION" > ~/version
 
 # make appimage with uruntime
 cd ..
-wget --retry-connrefused --tries=30 "$URUNTIME" -O ./uruntime
-wget --retry-connrefused --tries=30 "$URUNTIME_LITE" -O ./uruntime-lite
-chmod +x ./uruntime*
-
-# Keep the mount point (speeds up launch time) 
-sed -i 's|URUNTIME_MOUNT=[0-9]|URUNTIME_MOUNT=0|' ./uruntime-lite
-
-# Add udpate info to runtime
-echo "Adding update information \"$UPINFO\" to runtime..."
-./uruntime-lite --appimage-addupdinfo "$UPINFO"
-
-echo "Generating AppImage..."
-./uruntime --appimage-mkdwarfs -f \
-	--set-owner 0 --set-group 0 \
-	--no-history --no-create-timestamp \
-	--compression lzma -S24 -B8 \
-	--header uruntime-lite \
-	-i ./AppDir -o kdeconnect-"$VERSION"-anylinux-"$ARCH".AppImage
-
-echo "Generating zsync file..."
-zsyncmake *.AppImage -u *.AppImage
-echo "All Done!"
+wget --retry-connrefused --tries=30 "$URUNTIME" -O ./uruntime2appimage
+chmod +x ./uruntime2appimage
+./uruntime2appimage
