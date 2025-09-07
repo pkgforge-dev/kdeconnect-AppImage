@@ -29,3 +29,5 @@ echo "---------------------------------------------------------------"
 wget --retry-connrefused --tries=30 "$EXTRA_PACKAGES" -O ./get-debloated-pkgs.sh
 chmod +x ./get-debloated-pkgs.sh
 ./get-debloated-pkgs.sh --add-opengl --prefer-nano libxml2-mini qt6-base-mini opus-mini ffmpeg-mini
+
+pacman -Q kdeconnect | awk '{print $2; exit}' > ~/version
