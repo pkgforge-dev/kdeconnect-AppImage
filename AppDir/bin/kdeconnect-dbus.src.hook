@@ -1,0 +1,19 @@
+#!/bin/sh
+
+DATADIR="${XDG_DATA_HOME:-$HOME/.local/share}"
+KDE_DBUS="$DATADIR"/dbus-1/services/org.kde.kdeconnect.service
+
+_add_dbus_service() {
+	if ! grep -q "\"$APPIMAGE\" kdeconnectd" "$KDE_DBUS" 2>/dev/null; then
+		>&2 echo "Adding kdeconnect dbus service to $DATADIR/dbus-1/services"
+		mkdir -p "$DATADIR"/dbus-1/services
+		printf '%s\n%s\n%s\n' \
+			'[D-BUS Service]' \
+			'Name=org.kde.kdeconnect' \
+			"Exec=\"$APPIMAGE\" kdeconnectd" > "$KDE_DBUS"
+	fi
+}
+
+if commmand -v mkdir 1>/dev/null && command -v grep 1>/dev/null; then
+	_add_dbus_service
+fi
