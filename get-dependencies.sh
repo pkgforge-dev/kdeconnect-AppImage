@@ -13,13 +13,11 @@ pacman -Syu --noconfirm \
 	gtk3             \
 	kdeconnect       \
 	libxtst          \
-	patchelf         \
 	pipewire-audio   \
 	pulseaudio       \
 	pulseaudio-alsa  \
 	qt6ct            \
 	qt6-wayland      \
-	strace           \
 	wget             \
 	xorg-server-xvfb \
 	zsync
@@ -28,6 +26,6 @@ echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
 wget --retry-connrefused --tries=30 "$EXTRA_PACKAGES" -O ./get-debloated-pkgs.sh
 chmod +x ./get-debloated-pkgs.sh
-./get-debloated-pkgs.sh --add-opengl --prefer-nano libxml2-mini qt6-base-mini opus-mini ffmpeg-mini
+./get-debloated-pkgs.sh --add-common --prefer-nano ffmpeg-mini
 
 pacman -Q kdeconnect | awk '{print $2; exit}' > ~/version
