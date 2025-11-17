@@ -1,22 +1,19 @@
 #!/bin/sh
 
-set -eux
+set -eu
 
-ARCH="$(uname -m)"
-URUNTIME="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/uruntime2appimage.sh"
-SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/quick-sharun.sh"
-VERSION="$(cat ~/version)"
-
+ARCH=$(uname -m)
+VERSION=$(pacman -Q kdeconnect | awk '{print $2; exit}') # example command to get version of application here
+export ARCH VERSION
+export OUTPATH=./dist
+export ADD_HOOKS="self-updater.bg.hook"
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
-export OUTNAME=kdeconnect-"$VERSION"-anylinux-"$ARCH".AppImage
 export DESKTOP=/usr/share/applications/org.kde.kdeconnect.app.desktop
 export ICON=/usr/share/icons/hicolor/scalable/apps/kdeconnect.svg
 export DEPLOY_OPENGL=1
 
 # ADD LIBRARIES
-wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
-chmod +x ./quick-sharun
-./quick-sharun \
+quick-sharun \
 	/usr/bin/kdeconnect*                  \
 	/usr/bin/sshfs                        \
 	/usr/bin/sftp                         \
@@ -40,11 +37,5 @@ for lib in $(find ./AppDir/lib/qt6/qml -type f -name '*.so*'); do
 	ldd "$lib" | awk -F"[> ]" '{print $4}' | xargs -I {} cp -vn {} ./AppDir/lib || :
 done
 
-# MAKE APPIMAGE WITH URUNTIME
-wget --retry-connrefused --tries=30 "$URUNTIME" -O ./uruntime2appimage
-chmod +x ./uruntime2appimage
-./uruntime2appimage
-
-mkdir -p ./dist
-mv -v ./*.AppImage* ./dist
-mv -v ~/version     ./dist
+# Turn AppDir into AppImage
+quick-sharun --make-appimage
