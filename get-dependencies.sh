@@ -8,8 +8,7 @@ pacman -Syu --noconfirm \
 	kdeconnect       \
 	libxtst          \
 	pipewire-audio   \
-	qt6ct            \
-	qt6-wayland
+	qt6ct
 	
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
