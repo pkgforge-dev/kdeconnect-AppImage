@@ -15,7 +15,7 @@ export DEPLOY_OPENGL=1
 # ADD LIBRARIES
 quick-sharun \
 	/usr/bin/kdeconnect*                  \
-	/usr/bin/sshfs                        \
+	/usr/bin/*sshfs                       \
 	/usr/bin/sftp                         \
 	/usr/lib/libssl.so*                   \
 	/usr/lib/libKF6Svg.so*                \
