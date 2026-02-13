@@ -32,10 +32,11 @@ quick-sharun \
 	/usr/lib/qt6/plugins/kdeconnect/*/*   \
 	/usr/lib/qt6/plugins/kpeople/*/*
 
-# kdeconnect needs this as well
-for lib in $(find ./AppDir/lib/qt6/qml -type f -name '*.so*'); do
-	ldd "$lib" | awk -F"[> ]" '{print $4}' | xargs -I {} cp -vn {} ./AppDir/lib || :
-done
+# Additional changes can be done in between here
 
 # Turn AppDir into AppImage
 quick-sharun --make-appimage
+
+# Test the app for 12 seconds, if the app normally quits before that time
+# then skip this or check if some flag can be passed that makes it stay open
+quick-sharun --test ./dist/*.AppImage
