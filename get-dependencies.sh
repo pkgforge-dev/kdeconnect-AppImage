@@ -11,7 +11,8 @@ pacman -Syu --noconfirm \
 	libxtst          \
 	pipewire-audio   \
 	pipewire-jack    \
-	qt6ct
+	qt6ct            \
+	sshfs
 	
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
