@@ -15,7 +15,7 @@ export DEPLOY_OPENGL=1
 # ADD LIBRARIES
 quick-sharun \
 	/usr/bin/kdeconnect*                  \
-	/usr/bin/sshfs                        \
+	/usr/bin/*sshfs                       \
 	/usr/bin/sftp                         \
 	/usr/lib/libssl.so*                   \
 	/usr/lib/libKF6Svg.so*                \
@@ -27,15 +27,14 @@ quick-sharun \
 	/usr/lib/libKF6StatusNotifierItem.so* \
 	/usr/lib/libkquickcontrolsprivate.so* \
 	/usr/lib/libQt6QuickControls2*        \
-	/usr/lib/qt6/plugins/plasma/kcms/*/*  \
-	/usr/lib/qt6/plugins/kdeconnect/*     \
-	/usr/lib/qt6/plugins/kdeconnect/*/*   \
+	/usr/lib/qt6/plugins/kdeconnect       \
 	/usr/lib/qt6/plugins/kpeople/*/*
 
-# kdeconnect needs this as well
-for lib in $(find ./AppDir/lib/qt6/qml -type f -name '*.so*'); do
-	ldd "$lib" | awk -F"[> ]" '{print $4}' | xargs -I {} cp -vn {} ./AppDir/lib || :
-done
+# Additional changes can be done in between here
 
 # Turn AppDir into AppImage
 quick-sharun --make-appimage
+
+# Test the app for 12 seconds, if the app normally quits before that time
+# then skip this or check if some flag can be passed that makes it stay open
+quick-sharun --test ./dist/*.AppImage
