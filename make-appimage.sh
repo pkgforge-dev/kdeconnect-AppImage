@@ -27,8 +27,7 @@ quick-sharun \
 	/usr/lib/libKF6StatusNotifierItem.so* \
 	/usr/lib/libkquickcontrolsprivate.so* \
 	/usr/lib/libQt6QuickControls2*        \
-	/usr/lib/qt6/plugins/kdeconnect/*     \
-	/usr/lib/qt6/plugins/kdeconnect/*/*   \
+	/usr/lib/qt6/plugins/kdeconnect       \
 	/usr/lib/qt6/plugins/kpeople/*/*
 
 # Additional changes can be done in between here
