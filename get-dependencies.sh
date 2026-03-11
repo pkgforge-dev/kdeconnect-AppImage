@@ -7,13 +7,16 @@ ARCH=$(uname -m)
 echo "Installing package dependencies..."
 echo "---------------------------------------------------------------"
 pacman -Syu --noconfirm \
+	breeze           \
 	kdeconnect       \
+	kvantum          \
 	libxtst          \
+	lxqt-qtplugin    \
 	pipewire-audio   \
 	pipewire-jack    \
 	qt6ct            \
 	sshfs
-	
+
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
 get-debloated-pkgs --add-common --prefer-nano ffmpeg-mini kiconthemes-mini
