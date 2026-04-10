@@ -1,0 +1,15 @@
+#!/bin/sh
+
+_add_kdeconnect_dbus() {
+	_kdeconnect_dbus_file=$DATADIR/dbus-1/services/org.kde.kdeconnect.service
+	if ! grep -q "\"$APPIMAGE\" kdeconnectd" "$_kdeconnect_dbus_file" 2>/dev/null; then
+		>&2 echo "Adding kdeconnect dbus service to $DATADIR/dbus-1/services"
+		mkdir -p "${_kdeconnect_dbus_file%/*}"
+		printf '%s\n%s\n%s\n' \
+			'[D-BUS Service]' \
+			'Name=org.kde.kdeconnect' \
+			"Exec=\"$APPIMAGE\" kdeconnectd" > "$_kdeconnect_dbus_file"
+	fi
+}
+
+_add_kdeconnect_dbus || :
