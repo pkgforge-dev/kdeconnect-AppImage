@@ -10,7 +10,7 @@ export ADD_HOOKS="self-updater.bg.hook"
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
 export DESKTOP=/usr/share/applications/org.kde.kdeconnect.app.desktop
 export ICON=/usr/share/icons/hicolor/scalable/apps/kdeconnect.svg
-export DEPLOY_OPENGL=1
+export USE_HOST_DRIVERS_EXPERIMENTAL=1
 
 # ADD LIBRARIES
 quick-sharun \
