@@ -12,8 +12,6 @@ pacman -Syu --noconfirm \
 	kvantum          \
 	libxtst          \
 	lxqt-qtplugin    \
-	pipewire-audio   \
-	pipewire-jack    \
 	qt6ct            \
 	sshfs
 
